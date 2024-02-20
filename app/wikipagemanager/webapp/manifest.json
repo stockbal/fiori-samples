@@ -1,0 +1,179 @@
+{
+  "_version": "1.58.0",
+  "sap.app": {
+    "id": "com.demo.wikipagemanager",
+    "type": "application",
+    "i18n": "i18n/i18n.properties",
+    "applicationVersion": {
+      "version": "0.0.1"
+    },
+    "title": "{{appTitle}}",
+    "description": "{{appDescription}}",
+    "resources": "resources.json",
+    "sourceTemplate": {
+      "id": "@sap/generator-fiori:lrop",
+      "version": "1.11.2",
+      "toolsId": "d9b91d81-ae1e-4a70-8fbb-c7f890b1f474"
+    },
+    "dataSources": {
+      "mainService": {
+        "uri": "/odata/v4/wiki/",
+        "type": "OData",
+        "settings": {
+          "annotations": [],
+          "localUri": "localService/metadata.xml",
+          "odataVersion": "4.0"
+        }
+      }
+    }
+  },
+  "sap.ui": {
+    "technology": "UI5",
+    "icons": {
+      "icon": "",
+      "favIcon": "",
+      "phone": "",
+      "phone@2": "",
+      "tablet": "",
+      "tablet@2": ""
+    },
+    "deviceTypes": {
+      "desktop": true,
+      "tablet": true,
+      "phone": true
+    }
+  },
+  "sap.ui5": {
+    "flexEnabled": true,
+    "dependencies": {
+      "minUI5Version": "1.120.8",
+      "libs": {
+        "sap.m": {},
+        "sap.ui.core": {},
+        "sap.ushell": {},
+        "sap.fe.templates": {}
+      }
+    },
+    "contentDensities": {
+      "compact": true,
+      "cozy": true
+    },
+    "models": {
+      "i18n": {
+        "type": "sap.ui.model.resource.ResourceModel",
+        "settings": {
+          "bundleName": "com.demo.wikipagemanager.i18n.i18n"
+        }
+      },
+      "": {
+        "dataSource": "mainService",
+        "preload": true,
+        "settings": {
+          "synchronizationMode": "None",
+          "operationMode": "Server",
+          "autoExpandSelect": true,
+          "earlyRequests": true
+        }
+      },
+      "@i18n": {
+        "type": "sap.ui.model.resource.ResourceModel",
+        "uri": "i18n/i18n.properties"
+      }
+    },
+    "resources": {
+      "css": []
+    },
+    "routing": {
+      "routes": [
+        {
+          "pattern": ":?query:",
+          "name": "WikiPagesList",
+          "target": "WikiPagesList"
+        },
+        {
+          "pattern": "WikiPages({key}):?query:",
+          "name": "WikiPagesObjectPage",
+          "target": "WikiPagesObjectPage"
+        }
+      ],
+      "targets": {
+        "WikiPagesList": {
+          "type": "Component",
+          "id": "WikiPagesList",
+          "name": "sap.fe.templates.ListReport",
+          "options": {
+            "settings": {
+              "contextPath": "/WikiPages",
+              "variantManagement": "Page",
+              "navigation": {
+                "WikiPages": {
+                  "detail": {
+                    "route": "WikiPagesObjectPage"
+                  }
+                }
+              },
+              "initialLoad": "Enabled"
+            }
+          }
+        },
+        "WikiPagesObjectPage": {
+          "type": "Component",
+          "id": "WikiPagesObjectPage",
+          "name": "sap.fe.templates.ObjectPage",
+          "options": {
+            "settings": {
+              "editableHeaderContent": false,
+              "contextPath": "/WikiPages",
+              "content": {
+                "body": {
+                  "sections": {
+                    "EditorWithBuildingBlock": {
+                      "template": "com.demo.wikipagemanager.ext.fragment.EditorWithBuildingBlock",
+                      "position": {
+                        "placement": "After",
+                        "anchor": "GeneratedFacet1"
+                      },
+                      "title": "Editor using Building Block",
+                      "type": "XMLFragment"
+                    },
+                    "EditorUsingFragment": {
+                      "template": "com.demo.wikipagemanager.ext.fragment.EditorUsingFragment",
+                      "position": {
+                        "placement": "After",
+                        "anchor": "EditorWithBuildingBlock"
+                      },
+                      "title": "Editor defined in Fragment",
+                      "type": "XMLFragment"
+                    },
+                    "EditorUsingControllerExtension": {
+                      "template": "com.demo.wikipagemanager.ext.fragment.EditorUsingControllerExtension",
+                      "position": {
+                        "placement": "After",
+                        "anchor": "EditorUsingFragment"
+                      },
+                      "title": "Editor defined in Controller Extension",
+                      "type": "XMLFragment"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "extends": {
+      "extensions": {
+        "sap.ui.controllerExtensions": {
+          "sap.fe.templates.ObjectPage.ObjectPageController": {
+            "controllerName": "com.demo.wikipagemanager.ext.controller.ObjectPageExt"
+          }
+        }
+      }
+    }
+  },
+  "sap.fiori": {
+    "registrationIds": [],
+    "archeType": "transactional"
+  }
+}

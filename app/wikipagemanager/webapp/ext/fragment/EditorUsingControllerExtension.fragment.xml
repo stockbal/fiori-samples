@@ -1,0 +1,15 @@
+<core:FragmentDefinition xmlns:core="sap.ui.core"
+	xmlns="sap.m"
+	xmlns:l="sap.ui.layout"
+	xmlns:mvc="sap.ui.core.mvc">
+	<mvc:View id="_IDGenView1">
+		<l:VerticalLayout id="editorLayoutContainer"
+			class="sapUiContentPadding"
+			width="100%">
+			<FormattedText id="_IDGenFormattedText1"
+				htmlText="{content}"
+				visible="{= !${ui>/isEditable}}"/>
+		</l:VerticalLayout>
+	</mvc:View>
+</core:FragmentDefinition>
+

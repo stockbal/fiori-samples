@@ -1,0 +1,29 @@
+<core:FragmentDefinition xmlns:core="sap.ui.core"
+	xmlns="sap.m"
+	xmlns:l="sap.ui.layout"
+	xmlns:macros="sap.fe.macros"
+	xmlns:mvc="sap.ui.core.mvc">
+	<mvc:View id="_IDGenView1">
+		<l:VerticalLayout id="editorLayoutContainer"
+			class="sapUiContentPadding"
+			width="100%">
+			<macros:RichTextEditorWithMetadata metaPath="content"
+				id="myRichTextEditor">
+				<macros:buttonGroups>
+					<macros:buttonGroup name="font"
+						visible="true"
+						priority="10"
+						customPriority="10"
+						buttons="fontselect,fontsizeselect,forecolor"/>
+					<macros:buttonGroup name="font-style"
+						visible="true"
+						priority="20"
+						customPriority="20"
+						buttons="bold,italic,underline"/>
+				</macros:buttonGroups>
+			</macros:RichTextEditorWithMetadata>
+		</l:VerticalLayout>
+	</mvc:View>
+</core:FragmentDefinition>
+
+

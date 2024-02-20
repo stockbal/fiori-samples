@@ -1,0 +1,31 @@
+{
+  "name": "fe-richtexteditor",
+  "version": "1.0.0",
+  "description": "A simple CAP project.",
+  "license": "MIT",
+  "private": true,
+  "dependencies": {
+    "@sap/cds": "^7",
+    "express": "^4"
+  },
+  "devDependencies": {
+    "@cap-js/sqlite": "^1",
+    "@tsconfig/node20": "^20.1.2",
+    "cds-plugin-ui5": "^0.6.13",
+    "ts-node": "^10.9.2",
+    "typescript": "^5.3.3"
+  },
+  "prettier": {
+    "trailingComma": "none"
+  },
+  "scripts": {
+    "start": "cds-serve",
+    "watch": "cds-ts watch"
+  },
+  "workspaces": [
+    "app/*"
+  ],
+  "sapux": [
+    "app/wikipagemanager"
+  ]
+}

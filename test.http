@@ -1,0 +1,12 @@
+GET /odata/v4/payment/OpenItems?$search="01-05 ter"
+Host: localhost:4004
+
+###
+
+POST /odata/v4/payment/Payments(ID=c105b04a-307f-4972-9771-ec112a3238ff,IsActiveEntity=true)/draftEdit
+Host: localhost:4004
+Content-Type: application/json
+
+{
+    
+}

@@ -1,0 +1,210 @@
+<?xml version="1.0" encoding="utf-8"?>
+<edmx:Edmx Version="4.0" xmlns:edmx="http://docs.oasis-open.org/odata/ns/edmx">
+    <edmx:Reference Uri="https://sap.github.io/odata-vocabularies/vocabularies/Common.xml">
+        <edmx:Include Alias="Common" Namespace="com.sap.vocabularies.Common.v1"/>
+    </edmx:Reference>
+    <edmx:Reference Uri="https://oasis-tcs.github.io/odata-vocabularies/vocabularies/Org.OData.Core.V1.xml">
+        <edmx:Include Alias="Core" Namespace="Org.OData.Core.V1"/>
+    </edmx:Reference>
+    <edmx:Reference Uri="https://oasis-tcs.github.io/odata-vocabularies/vocabularies/Org.OData.Measures.V1.xml">
+        <edmx:Include Alias="Measures" Namespace="Org.OData.Measures.V1"/>
+    </edmx:Reference>
+    <edmx:Reference Uri="https://sap.github.io/odata-vocabularies/vocabularies/UI.xml">
+        <edmx:Include Alias="UI" Namespace="com.sap.vocabularies.UI.v1"/>
+    </edmx:Reference>
+    <edmx:DataServices>
+        <Schema Namespace="PaymentService" xmlns="http://docs.oasis-open.org/odata/ns/edm">
+            <EntityContainer Name="EntityContainer">
+                <EntitySet Name="OpenItems" EntityType="PaymentService.OpenItems">
+                    <NavigationPropertyBinding Path="currency" Target="Currencies"/>
+                </EntitySet>
+                <EntitySet Name="Payments" EntityType="PaymentService.Payments"/>
+                <EntitySet Name="Currencies" EntityType="PaymentService.Currencies">
+                    <NavigationPropertyBinding Path="texts" Target="Currencies_texts"/>
+                    <NavigationPropertyBinding Path="localized" Target="Currencies_texts"/>
+                </EntitySet>
+                <EntitySet Name="Currencies_texts" EntityType="PaymentService.Currencies_texts"/>
+            </EntityContainer>
+            <EntityType Name="OpenItems">
+                <Key>
+                    <PropertyRef Name="ID"/>
+                </Key>
+                <Property Name="ID" Type="Edm.Guid" Nullable="false"/>
+                <Property Name="createdAt" Type="Edm.DateTimeOffset" Precision="7"/>
+                <Property Name="createdBy" Type="Edm.String" MaxLength="255"/>
+                <Property Name="modifiedAt" Type="Edm.DateTimeOffset" Precision="7"/>
+                <Property Name="modifiedBy" Type="Edm.String" MaxLength="255"/>
+                <Property Name="policyId" Type="Edm.String"/>
+                <Property Name="postingDate" Type="Edm.Date"/>
+                <Property Name="comment" Type="Edm.String"/>
+                <Property Name="costs" Type="Edm.Decimal" Scale="5" Precision="17"/>
+                <NavigationProperty Name="currency" Type="PaymentService.Currencies">
+                    <ReferentialConstraint Property="currency_code" ReferencedProperty="code"/>
+                </NavigationProperty>
+                <Property Name="currency_code" Type="Edm.String" MaxLength="3"/>
+            </EntityType>
+            <EntityType Name="Payments">
+                <Key>
+                    <PropertyRef Name="ID"/>
+                </Key>
+                <Property Name="ID" Type="Edm.Guid" Nullable="false"/>
+                <Property Name="createdAt" Type="Edm.DateTimeOffset" Precision="7"/>
+                <Property Name="createdBy" Type="Edm.String" MaxLength="255"/>
+                <Property Name="modifiedAt" Type="Edm.DateTimeOffset" Precision="7"/>
+                <Property Name="modifiedBy" Type="Edm.String" MaxLength="255"/>
+                <Property Name="transactionId" Type="Edm.Guid"/>
+                <Property Name="yearPeriod" Type="Edm.String" MaxLength="10"/>
+            </EntityType>
+            <EntityType Name="Currencies">
+                <Key>
+                    <PropertyRef Name="code"/>
+                </Key>
+                <Property Name="name" Type="Edm.String" MaxLength="255"/>
+                <Property Name="descr" Type="Edm.String" MaxLength="1000"/>
+                <Property Name="code" Type="Edm.String" MaxLength="3" Nullable="false"/>
+                <Property Name="symbol" Type="Edm.String" MaxLength="5"/>
+                <Property Name="minorUnit" Type="Edm.Int16"/>
+                <NavigationProperty Name="texts" Type="Collection(PaymentService.Currencies_texts)">
+                    <OnDelete Action="Cascade"/>
+                </NavigationProperty>
+                <NavigationProperty Name="localized" Type="PaymentService.Currencies_texts">
+                    <ReferentialConstraint Property="code" ReferencedProperty="code"/>
+                </NavigationProperty>
+            </EntityType>
+            <EntityType Name="Currencies_texts">
+                <Key>
+                    <PropertyRef Name="locale"/>
+                    <PropertyRef Name="code"/>
+                </Key>
+                <Property Name="locale" Type="Edm.String" MaxLength="14" Nullable="false"/>
+                <Property Name="name" Type="Edm.String" MaxLength="255"/>
+                <Property Name="descr" Type="Edm.String" MaxLength="1000"/>
+                <Property Name="code" Type="Edm.String" MaxLength="3" Nullable="false"/>
+            </EntityType>
+            <Annotations Target="PaymentService.OpenItems/createdAt">
+                <Annotation Term="UI.HiddenFilter" Bool="true"/>
+                <Annotation Term="Core.Immutable" Bool="true"/>
+                <Annotation Term="Core.Computed" Bool="true"/>
+                <Annotation Term="Common.Label" String="{i18n>CreatedAt}"/>
+                </Annotations>
+                <Annotations Target="PaymentService.OpenItems/createdBy">
+                    <Annotation Term="UI.HiddenFilter" Bool="true"/>
+                    <Annotation Term="Core.Immutable" Bool="true"/>
+                    <Annotation Term="Core.Computed" Bool="true"/>
+                    <Annotation Term="Core.Description" String="{i18n>UserID.Description}"/>
+                        <Annotation Term="Common.Label" String="{i18n>CreatedBy}"/>
+                        </Annotations>
+                        <Annotations Target="PaymentService.OpenItems/modifiedAt">
+                            <Annotation Term="UI.HiddenFilter" Bool="true"/>
+                            <Annotation Term="Core.Computed" Bool="true"/>
+                            <Annotation Term="Common.Label" String="{i18n>ChangedAt}"/>
+                            </Annotations>
+                            <Annotations Target="PaymentService.OpenItems/modifiedBy">
+                                <Annotation Term="UI.HiddenFilter" Bool="true"/>
+                                <Annotation Term="Core.Computed" Bool="true"/>
+                                <Annotation Term="Core.Description" String="{i18n>UserID.Description}"/>
+                                    <Annotation Term="Common.Label" String="{i18n>ChangedBy}"/>
+                                    </Annotations>
+                                    <Annotations Target="PaymentService.OpenItems/policyId">
+                                        <Annotation Term="Common.Label" String="Policy"/>
+                                    </Annotations>
+                                    <Annotations Target="PaymentService.OpenItems/postingDate">
+                                        <Annotation Term="Common.Label" String="Posting Date"/>
+                                    </Annotations>
+                                    <Annotations Target="PaymentService.OpenItems/comment">
+                                        <Annotation Term="Common.Label" String="Comment"/>
+                                    </Annotations>
+                                    <Annotations Target="PaymentService.OpenItems/costs">
+                                        <Annotation Term="Measures.ISOCurrency" Path="currency_code"/>
+                                        <Annotation Term="Common.Label" String="Costs"/>
+                                    </Annotations>
+                                    <Annotations Target="PaymentService.OpenItems/currency">
+                                        <Annotation Term="Common.Label" String="Currency"/>
+                                        <Annotation Term="Core.Description" String="{i18n>CurrencyCode.Description}"/>
+                                        </Annotations>
+                                        <Annotations Target="PaymentService.OpenItems/currency_code">
+                                            <Annotation Term="Common.Label" String="Currency"/>
+                                            <Annotation Term="Common.ValueList">
+                                                <Record Type="Common.ValueListType">
+                                                    <PropertyValue Property="Label" String="Currency"/>
+                                                    <PropertyValue Property="CollectionPath" String="Currencies"/>
+                                                    <PropertyValue Property="Parameters">
+                                                        <Collection>
+                                                            <Record Type="Common.ValueListParameterInOut">
+                                                                <PropertyValue Property="LocalDataProperty" PropertyPath="currency_code"/>
+                                                                <PropertyValue Property="ValueListProperty" String="code"/>
+                                                            </Record>
+                                                            <Record Type="Common.ValueListParameterDisplayOnly">
+                                                                <PropertyValue Property="ValueListProperty" String="name"/>
+                                                            </Record>
+                                                        </Collection>
+                                                    </PropertyValue>
+                                                </Record>
+                                            </Annotation>
+                                            <Annotation Term="Core.Description" String="{i18n>CurrencyCode.Description}"/>
+                                            </Annotations>
+                                            <Annotations Target="PaymentService.Payments/createdAt">
+                                                <Annotation Term="UI.HiddenFilter" Bool="true"/>
+                                                <Annotation Term="Core.Immutable" Bool="true"/>
+                                                <Annotation Term="Core.Computed" Bool="true"/>
+                                                <Annotation Term="Common.Label" String="{i18n>CreatedAt}"/>
+                                                </Annotations>
+                                                <Annotations Target="PaymentService.Payments/createdBy">
+                                                    <Annotation Term="UI.HiddenFilter" Bool="true"/>
+                                                    <Annotation Term="Core.Immutable" Bool="true"/>
+                                                    <Annotation Term="Core.Computed" Bool="true"/>
+                                                    <Annotation Term="Core.Description" String="{i18n>UserID.Description}"/>
+                                                        <Annotation Term="Common.Label" String="{i18n>CreatedBy}"/>
+                                                        </Annotations>
+                                                        <Annotations Target="PaymentService.Payments/modifiedAt">
+                                                            <Annotation Term="UI.HiddenFilter" Bool="true"/>
+                                                            <Annotation Term="Core.Computed" Bool="true"/>
+                                                            <Annotation Term="Common.Label" String="{i18n>ChangedAt}"/>
+                                                            </Annotations>
+                                                            <Annotations Target="PaymentService.Payments/modifiedBy">
+                                                                <Annotation Term="UI.HiddenFilter" Bool="true"/>
+                                                                <Annotation Term="Core.Computed" Bool="true"/>
+                                                                <Annotation Term="Core.Description" String="{i18n>UserID.Description}"/>
+                                                                    <Annotation Term="Common.Label" String="{i18n>ChangedBy}"/>
+                                                                    </Annotations>
+                                                                    <Annotations Target="PaymentService.Currencies">
+                                                                        <Annotation Term="UI.Identification">
+                                                                            <Collection>
+                                                                                <Record Type="UI.DataField">
+                                                                                    <PropertyValue Property="Value" Path="name"/>
+                                                                                </Record>
+                                                                            </Collection>
+                                                                        </Annotation>
+                                                                    </Annotations>
+                                                                    <Annotations Target="PaymentService.Currencies/name">
+                                                                        <Annotation Term="Common.Label" String="{i18n>Name}"/>
+                                                                        </Annotations>
+                                                                        <Annotations Target="PaymentService.Currencies/descr">
+                                                                            <Annotation Term="Common.Label" String="{i18n>Description}"/>
+                                                                            </Annotations>
+                                                                            <Annotations Target="PaymentService.Currencies/code">
+                                                                                <Annotation Term="Common.Text" Path="name"/>
+                                                                                <Annotation Term="Common.Label" String="{i18n>CurrencyCode}"/>
+                                                                                </Annotations>
+                                                                                <Annotations Target="PaymentService.Currencies/symbol">
+                                                                                    <Annotation Term="Common.Label" String="{i18n>CurrencySymbol}"/>
+                                                                                    </Annotations>
+                                                                                    <Annotations Target="PaymentService.Currencies/minorUnit">
+                                                                                        <Annotation Term="Common.Label" String="{i18n>CurrencyMinorUnit}"/>
+                                                                                        </Annotations>
+                                                                                        <Annotations Target="PaymentService.Currencies_texts/locale">
+                                                                                            <Annotation Term="Common.Label" String="{i18n>LanguageCode}"/>
+                                                                                            </Annotations>
+                                                                                            <Annotations Target="PaymentService.Currencies_texts/name">
+                                                                                                <Annotation Term="Common.Label" String="{i18n>Name}"/>
+                                                                                                </Annotations>
+                                                                                                <Annotations Target="PaymentService.Currencies_texts/descr">
+                                                                                                    <Annotation Term="Common.Label" String="{i18n>Description}"/>
+                                                                                                    </Annotations>
+                                                                                                    <Annotations Target="PaymentService.Currencies_texts/code">
+                                                                                                        <Annotation Term="Common.Text" Path="name"/>
+                                                                                                        <Annotation Term="Common.Label" String="{i18n>CurrencyCode}"/>
+                                                                                                        </Annotations>
+                                                                                                    </Schema>
+                                                                                                </edmx:DataServices>
+                                                                                            </edmx:Edmx>

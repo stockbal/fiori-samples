@@ -1,0 +1,185 @@
+{
+  "_version": "1.58.0",
+  "sap.app": {
+    "id": "project1",
+    "type": "application",
+    "i18n": "i18n/i18n.properties",
+    "applicationVersion": {
+      "version": "0.0.1"
+    },
+    "title": "{{appTitle}}",
+    "description": "{{appDescription}}",
+    "resources": "resources.json",
+    "sourceTemplate": {
+      "id": "@sap/generator-fiori:lrop",
+      "version": "1.11.2",
+      "toolsId": "ffa82063-843f-46e5-b720-b05504b40fba"
+    },
+    "dataSources": {
+      "mainService": {
+        "uri": "/odata/v4/payment/",
+        "type": "OData",
+        "settings": {
+          "annotations": [],
+          "localUri": "localService/metadata.xml",
+          "odataVersion": "4.0"
+        }
+      }
+    }
+  },
+  "sap.ui": {
+    "technology": "UI5",
+    "icons": {
+      "icon": "",
+      "favIcon": "",
+      "phone": "",
+      "phone@2": "",
+      "tablet": "",
+      "tablet@2": ""
+    },
+    "deviceTypes": {
+      "desktop": true,
+      "tablet": true,
+      "phone": true
+    }
+  },
+  "sap.ui5": {
+    "flexEnabled": true,
+    "dependencies": {
+      "minUI5Version": "1.121.1",
+      "libs": {
+        "sap.m": {},
+        "sap.ui.core": {},
+        "sap.ushell": {},
+        "sap.fe.templates": {},
+        "sap.fe.macros": {}
+      }
+    },
+    "contentDensities": {
+      "compact": true,
+      "cozy": true
+    },
+    "models": {
+      "i18n": {
+        "type": "sap.ui.model.resource.ResourceModel",
+        "settings": {
+          "bundleName": "project1.i18n.i18n"
+        }
+      },
+      "": {
+        "dataSource": "mainService",
+        "preload": true,
+        "settings": {
+          "synchronizationMode": "None",
+          "operationMode": "Server",
+          "autoExpandSelect": true,
+          "earlyRequests": true
+        }
+      },
+      "@i18n": {
+        "type": "sap.ui.model.resource.ResourceModel",
+        "uri": "i18n/i18n.properties"
+      }
+    },
+    "resources": {
+      "css": []
+    },
+    "routing": {
+      "routes": [
+        {
+          "pattern": ":?query:",
+          "name": "OpenItemsList",
+          "target": "OpenItemsList"
+        },
+        {
+          "pattern": "OpenItems({key}):?query:",
+          "name": "OpenItemsObjectPage",
+          "target": "OpenItemsObjectPage"
+        }
+      ],
+      "targets": {
+        "OpenItemsList": {
+          "type": "Component",
+          "id": "OpenItemsList",
+          "name": "sap.fe.templates.ListReport",
+          "options": {
+            "settings": {
+              "contextPath": "/OpenItems",
+              "variantManagement": "Page",
+              "navigation": {
+                "OpenItems": {
+                  "detail": {
+                    "route": "OpenItemsObjectPage"
+                  }
+                }
+              },
+              "content": {
+                "header": {
+                  "actions": {
+                    "CreatePayment": {
+                      "press": "project1.ext.controller.CreatePayment.createPayment",
+                      "visible": true,
+                      "enabled": true,
+                      "text": "New Payment"
+                    }
+                  }
+                }
+              },
+              "controlConfiguration": {
+                "@com.sap.vocabularies.UI.v1.LineItem": {
+                  "tableSettings": {
+                    "type": "ResponsiveTable"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "OpenItemsObjectPage": {
+          "type": "Component",
+          "id": "OpenItemsObjectPage",
+          "name": "sap.fe.templates.ObjectPage",
+          "options": {
+            "settings": {
+              "editableHeaderContent": false,
+              "contextPath": "/OpenItems",
+              "content": {
+                "header": {
+                  "actions": {
+                    "NewPayment": {
+                      "press": "project1.ext.controller.CreatePayment.createPayment",
+                      "visible": true,
+                      "enabled": true,
+                      "text": "New Payment",
+                      "position": {
+                        "placement": "Before",
+                        "anchor": "EditAction"
+                      }
+                    }
+                  }
+                },
+                "body": {
+                  "sections": {
+                    "CustomSection": {
+                      "template": "project1.ext.fragment.CustomSection",
+                      "position": {
+                        "placement": "After",
+                        "anchor": "General"
+                      },
+                      "title": "CustomFPM",
+                      "type": "XMLFragment"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  },
+  "sap.fiori": {
+    "registrationIds": [],
+    "archeType": "transactional"
+  }
+}

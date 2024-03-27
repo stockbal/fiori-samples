@@ -1,12 +1,20 @@
 using PaymentService as service from '../../srv/payment-service';
 
 annotate service.OpenItems with @( //
-    UI.SelectionFields     : [
+    UI.HeaderInfo         : {
+        Title         : {
+            $Type: 'UI.DataField',
+            Value: policyId,
+        },
+        TypeName      : 'Open Item',
+        TypeNamePlural: 'Open Items'
+    },
+    UI.SelectionFields    : [
         policyId,
         postingDate,
         currency_code
     ],
-    UI.LineItem            : [
+    UI.LineItem           : [
         {
             $Type: 'UI.DataField',
             Value: policyId,
@@ -25,44 +33,20 @@ annotate service.OpenItems with @( //
             ![@UI.Importance]: #High,
         },
     ],
-    UI.FieldGroup #General : {
+    UI.FieldGroup #General: {
         Label: 'General',
         Data : [
             {Value: policyId},
             {Value: costs},
-            {Value: yearPeriod_period}
+            {Value: postingDate}
         ],
     },
-    UI.FieldGroup #General2: {
-        Label: 'General 2',
-        Data : [{Value: yearPeriod_period}],
-    },
-    UI.Facets              : [{
+    UI.Facets             : [{
         $Type : 'UI.ReferenceFacet',
         ID    : 'General',
         Target: '@UI.FieldGroup#General',
     }, ]
-) {
-    yearPeriod @(Common: {
-        Text           : yearPeriod.name,
-        TextArrangement: #TextFirst,
-        ValueList      : {
-            Label         : 'Value with Value Help',
-            CollectionPath: 'YearPeriods',
-            Parameters    : [
-                {
-                    $Type            : 'Common.ValueListParameterInOut',
-                    LocalDataProperty: yearPeriod_period,
-                    ValueListProperty: 'period'
-                },
-                {
-                    $Type            : 'Common.ValueListParameterDisplayOnly',
-                    ValueListProperty: 'name'
-                }
-            ]
-        }
-    });
-};
+) {};
 
 annotate service.Payments with @( //
     UI.Facets                 : [{

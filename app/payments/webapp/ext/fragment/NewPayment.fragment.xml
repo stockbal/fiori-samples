@@ -3,16 +3,13 @@
     xmlns:mvc="sap.ui.core.mvc"
     xmlns:f="sap.ui.layout.form"
     xmlns:macros="sap.fe.macros">
-    <Dialog title="Dialog with Form Building Block"
-        contentWidth="50%">
-        <VBox>
-            <!-- <macros:Form id="dialogForm1" metaPath="@com.sap.vocabularies.UI.v1.FieldGroup#General" /> -->
-
+    <Dialog id="_IDGenDialog1"
+        title="Dialog with Form Building Block"
+        contentWidth="30%">
+        <VBox id="_IDGenVBox1">
             <macros:Form id="dialogForm2"
                 contextPath="/Payments"
                 metaPath="$Type/@com.sap.vocabularies.UI.v1.Facets/0" />
-
-            <!-- <Label text="{mm>/length}" /> -->
         </VBox>
     </Dialog>
 </core:FragmentDefinition>

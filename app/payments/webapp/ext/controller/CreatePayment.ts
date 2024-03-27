@@ -15,7 +15,7 @@ export async function createPayment(this: ExtensionAPI, pageContext: Context) {
 
   const dialog = (await this.loadFragment({
     id: "fragmentThree",
-    name: "project1.ext.fragment.NewPayment",
+    name: "payments.ext.fragment.NewPayment",
     controller: this,
     contextPath: "/Payments",
   })) as Dialog;
@@ -33,14 +33,12 @@ export async function createPayment(this: ExtensionAPI, pageContext: Context) {
 
   model.attachPropertyChange(modelPropertyChanged);
 
-  dialog.setModel(Messaging.getMessageModel(), "mm");
-
   (this.getModel("ui") as JSONModel).setProperty("/isEditable", true);
-  dialog.bindObject({
-    // path: `/Payments(ID=c105b04a-307f-4972-9771-ec112a3238ff,IsActiveEntity=false)`,
+
+  // REMARK: normally the ID for the payment entity would not be hardcoded here :)
+  dialog.bindElement({
     path: `/Payments(c105b04a-307f-4972-9771-ec112a3238ff)`,
   });
-  // this.getEditFlow().editDocument()
 
   Messaging.removeAllMessages();
   dialog.open();

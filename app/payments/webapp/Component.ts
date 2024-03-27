@@ -1,7 +1,7 @@
 import BaseComponent from "sap/fe/core/AppComponent";
 
 /**
- * @namespace project1
+ * @namespace payments
  */
 export default class Component extends BaseComponent {
 

@@ -19,12 +19,12 @@
   "scripts": {
     "start": "cds-serve",
     "watch": "cds-ts watch",
-    "watch-project1": "cds watch --open project1/index.html?sap-ui-xx-viewCache=false --livereload false"
+    "watch-payments": "cds watch --open payments/index.html?sap-ui-xx-viewCache=false --livereload false"
   },
   "workspaces": [
     "app/*"
   ],
   "sapux": [
-    "app/project1"
+    "app/payments"
   ]
 }

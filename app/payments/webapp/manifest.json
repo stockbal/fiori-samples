@@ -1,7 +1,7 @@
 {
   "_version": "1.58.0",
   "sap.app": {
-    "id": "project1",
+    "id": "payments",
     "type": "application",
     "i18n": "i18n/i18n.properties",
     "applicationVersion": {
@@ -63,7 +63,7 @@
       "i18n": {
         "type": "sap.ui.model.resource.ResourceModel",
         "settings": {
-          "bundleName": "project1.i18n.i18n"
+          "bundleName": "payments.i18n.i18n"
         }
       },
       "": {
@@ -117,7 +117,7 @@
                 "header": {
                   "actions": {
                     "CreatePayment": {
-                      "press": "project1.ext.controller.CreatePayment.createPayment",
+                      "press": "payments.ext.controller.CreatePayment.createPayment",
                       "visible": true,
                       "enabled": true,
                       "text": "New Payment"
@@ -142,36 +142,7 @@
           "options": {
             "settings": {
               "editableHeaderContent": false,
-              "contextPath": "/OpenItems",
-              "content": {
-                "header": {
-                  "actions": {
-                    "NewPayment": {
-                      "press": "project1.ext.controller.CreatePayment.createPayment",
-                      "visible": true,
-                      "enabled": true,
-                      "text": "New Payment",
-                      "position": {
-                        "placement": "Before",
-                        "anchor": "EditAction"
-                      }
-                    }
-                  }
-                },
-                "body": {
-                  "sections": {
-                    "CustomSection": {
-                      "template": "project1.ext.fragment.CustomSection",
-                      "position": {
-                        "placement": "After",
-                        "anchor": "General"
-                      },
-                      "title": "CustomFPM",
-                      "type": "XMLFragment"
-                    }
-                  }
-                }
-              }
+              "contextPath": "/OpenItems"
             }
           }
         }

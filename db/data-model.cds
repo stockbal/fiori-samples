@@ -11,19 +11,13 @@ using {
 
 @cds.search: {comment}
 entity OpenItems : cuid, managed {
-  policyId    : String                     @title: 'Policy';
-  postingDate : Date                       @title: 'Posting Date';
-  comment     : String                     @title: 'Comment';
+  policyId    : String         @title: 'Policy';
+  postingDate : Date           @title: 'Posting Date';
+  comment     : String         @title: 'Comment';
 
   @Measures.ISOCurrency: currency_code
-  // @assert.range        : [
-  //   10,
-  //   100
-  // ]
-  costs       : Decimal(17, 5)             @title: 'Costs';
-
-  currency    : Currency                   @title: 'Currency';
-  yearPeriod  : Association to YearPeriods @title: 'Period';
+  costs       : Decimal(17, 5) @title: 'Costs';
+  currency    : Currency       @title: 'Currency';
 }
 
 entity Payments : cuid, managed {

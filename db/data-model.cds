@@ -21,7 +21,7 @@ entity OpenItems : cuid, managed {
 }
 
 entity Payments : cuid, managed {
-  transactionId : UUID;
+  transactionId : UUID                       @title: 'Transaction ID';
   yearPeriod    : Association to YearPeriods @assert.target;
 
   @Measures.ISOCurrency: currency_code

@@ -1,0 +1,43 @@
+<core:FragmentDefinition xmlns:core="sap.ui.core"
+	xmlns="sap.m"
+	xmlns:macros="sap.fe.macros"
+	xmlns:upload="sap.m.upload">
+	<upload:UploadSet id="AttachmentUploadSet"
+		core:require="{ handler: 'bpmanager/ext/fragment/CustomUpload'}"
+		instantUpload="false"
+		showIcons="true"
+		uploadEnabled="{ui>/isEditable}"
+		terminationEnabled="true"
+		multiple="true"
+		afterItemAdded="handler.onAfterItemAdded"
+		afterItemRemoved="handler.onItemRemoved"
+		selectionChanged="handler.onSelectionChanged"
+		maxFileNameLength="30"
+		maxFileSize="200"
+		httpRequestMethod="Put"
+		uploadButtonInvisible="false"
+		sameFilenameAllowed="false"
+		items="{path: 'attachments', templateShareable: false}">
+		<upload:toolbar>
+			<OverflowToolbar id="uploadToolbar">
+				<Title id="_IDGenTitle1"
+					text="{i18n>attachments_title} ({attachments/$count})"></Title>
+				<ToolbarSpacer id="_IDGenToolbarSpacer1" />
+				<upload:UploadSetToolbarPlaceholder id="_IDGenUploadSetToolbarPlaceholder1" />
+				<Button id="_IDGenButton1"
+					text="{i18n>delete_selected_files_button}"
+					enabled="{= ${upload>/uploadSetSelection} > 0 &amp;&amp; ${ui>/isEditable}}"
+					press="handler.onMultiDelete"/>
+			</OverflowToolbar>
+		</upload:toolbar>
+		<upload:items>
+			<upload:UploadSetItem id="_IDGenUploadSetItem1"
+				enabledEdit="{ui>/isEditable}"
+				enabledRemove="{ui>/isEditable}"
+				fileName="{fileName}"
+				mediaType="{mimeType}"
+				url="{content}">
+			</upload:UploadSetItem>
+		</upload:items>
+	</upload:UploadSet>
+</core:FragmentDefinition>

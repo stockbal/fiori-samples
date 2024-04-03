@@ -1,0 +1,29 @@
+{
+  "name": "multiple-file-upload",
+  "version": "1.0.0",
+  "description": "Multiple File Upload section on Object Page",
+  "license": "UNLICENSED",
+  "private": true,
+  "dependencies": {
+    "@sap/cds": "^7",
+    "express": "^4"
+  },
+  "devDependencies": {
+    "@cap-js/sqlite": "^1",
+    "@sap/cds-dk": "^7",
+    "cds-plugin-ui5": "^0.6.13"
+  },
+  "scripts": {
+    "start": "cds-serve",
+    "watch-bpmanager": "cds watch --open bpmanager/index.html?sap-ui-xx-viewCache=false --livereload false"
+  },
+  "workspaces": [
+    "app/*"
+  ],
+  "sapux": [
+    "app/bpmanager"
+  ],
+  "prettier": {
+    "trailingComma": "none"
+  }
+}

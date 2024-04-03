@@ -7,6 +7,7 @@ Each scenario is realized in a dedicated branch of this repository.
 ## Fiori Elements Object Page
 
 - [Using sap.ui.richtexteditor.RichTextEditor in Fiori Elements Object Page](https://github.com/stockbal/fiori-samples/tree/fe/lrop-richtexteditor)
+- [Using sap.m.upload.UploadSet control in Fiori Elements Object Page with OData v4 service](https://github.com/stockbal/fiori-samples/tree/fe/upload-set-with-ov4)
 
 ## Fiori Elements List Report
 

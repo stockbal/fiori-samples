@@ -26,4 +26,7 @@ npm run watch-bpmanager
 
 ## Known bugs
 
-- The count in the upload section control does not get refreshed after a new attachment get's uploaded
+- The count in the upload section control does not get refreshed after a new attachment get's uploaded  
+  Possible solutions:
+  - Manually update the title text with the current count
+  - Find correct `context` for the `ODataListBinding` creation so the `attachment/$count` binding get's refreshed properly

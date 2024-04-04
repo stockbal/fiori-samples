@@ -26,12 +26,14 @@ export default {
     if (!uploadItem) {
       return;
     }
-    const context = this.getBindingContext();
+    const context = this.getBindingContext() as Context;
     if (!context) {
       return;
     }
 
-    // using the "items" binding from the UploadSet produces duplicate entries (further analysis needed???)
+    // - using the "items" binding from the UploadSet produces duplicate entries (further analysis needed???)
+    // - using the "context" during "bindList" works only if the object page is already loaded in the draft state
+    //   otherwise an exception is thrown because of a path missmatch (-> analyze fiori elements framework how ODataListBinding's are created for table facets)
     const attachmentBinding = this.getModel()?.bindList(
       `${context.getPath()}/attachments`
     ) as ODataListBinding;

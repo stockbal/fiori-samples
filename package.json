@@ -11,7 +11,8 @@
   "devDependencies": {
     "@cap-js/sqlite": "^1",
     "@sap/cds-dk": "^7",
-    "cds-plugin-ui5": "^0.6.13"
+    "cds-plugin-ui5": "^0.6.13",
+    "cds-launchpad-plugin": "2.1.8"
   },
   "scripts": {
     "start": "cds-serve",

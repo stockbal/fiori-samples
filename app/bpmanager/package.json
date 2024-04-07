@@ -23,7 +23,7 @@
     "@sap-ux/ui5-middleware-fe-mockserver": "2"
   },
   "browserslist": [
-    ">2% and not ie 11"
+    "defaults"
   ],
   "scripts": {
     "build": "ui5 build --config=ui5.yaml --clean-dest --dest dist",

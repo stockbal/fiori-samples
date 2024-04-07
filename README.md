@@ -28,7 +28,7 @@ Additionally the control has also been enhanced with a multi delete option.
 
 ## Alternate approach by using `@UI.LineItem` and enhancing the table toolbar
 
-This app also shows another approach if the custom fragment approach may not be the right one for you. 
+This app also shows another approach if the custom fragment approach may not be the right one for you.
 
 Here we are creating the table section via service level annotations (i.e. `@UI.LineItem`).
 
@@ -45,7 +45,7 @@ In the `onInit` event inside an Object Page Controller Extension we are then enh
 
 ## Choosing the correct approach
 
-By choosing the custom fragment approach we are more flexible in regards to representation and event the upload target.
+By choosing the custom fragment approach we are more flexible in regards to representation and even the upload target.
 
 If we are using the annotation approach we are mostly pushing the UI generation to the Fiori Elements framework and have less maintenance effort  - at least for the table control. Of course, there are some risks if the ID generation may change in the future (see `.byId("...")` snippets in the custom code) or the used controls have updates or breaking changes in future UI5 versions.
 

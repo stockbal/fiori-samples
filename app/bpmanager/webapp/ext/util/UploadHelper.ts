@@ -18,7 +18,7 @@ const ATTACHMENT_TABLE_ID =
 const LAST_ITEM_CUSTOM_KEY = "lastItem";
 
 /**
- * @namespace bpprocessor.ext.util
+ * @namespace bpmanager.ext.util
  */
 export default class UploadHelper {
   #fileUploader: FileUploader;

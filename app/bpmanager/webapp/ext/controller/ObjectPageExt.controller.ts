@@ -7,7 +7,7 @@ import UploadHelper from "../util/UploadHelper";
 let attachmentUtil: UploadHelper;
 
 /**
- * @namespace bpprocessor.ext.controller
+ * @namespace bpmanager.ext.controller
  * @controller
  */
 export default class ObjectPageExt extends ControllerExtension<ExtensionAPI> {

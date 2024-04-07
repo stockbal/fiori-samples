@@ -1,10 +1,14 @@
-# Using the `UploadSet` control on the object page (OData v4)
+# Multi file upload on Object Page Media entity (OData v4)
 
 > **Note**: Follow this [link](https://github.com/stockbal/fiori-samples/tree/main) to show all available scenarios
 
 ## Keywords
 
-OData v4, Fiori Elements, Multi File Upload
+OData v4, Fiori Elements, Multi File Upload, Media Streaming
+
+## Scenario Requirements
+
+To use either of the 2 approaches that are described in the following sections, your OData v4 service should have an Entity with a navigation property to an entity that is enabled for media streaming.
 
 ## Description of Custom Fragment Approach
 
@@ -16,7 +20,7 @@ Additionally the control has also been enhanced with a multi delete option.
 <details>
 <summary>Expand to show preview</summary>
 
-### Preview of Custom Control
+### Preview of Custom Fragment
 
 ![Custom Fragment Preview](docs/images/app_preview.gif)
 

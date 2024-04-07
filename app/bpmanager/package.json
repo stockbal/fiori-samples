@@ -22,6 +22,9 @@
     "@sap-ux/eslint-plugin-fiori-tools": "^0.2.0",
     "@sap-ux/ui5-middleware-fe-mockserver": "2"
   },
+  "browserslist": [
+    ">2% and not ie 11"
+  ],
   "scripts": {
     "build": "ui5 build --config=ui5.yaml --clean-dest --dest dist",
     "lint": "eslint ./",

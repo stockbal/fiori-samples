@@ -19,10 +19,24 @@ UI: {
         {Value: firstName},
         {Value: lastName}
     ],
-    Facets        : [{
-        $Type : 'UI.ReferenceFacet',
-        Label : 'General Information',
-        ID    : 'Identification',
-        Target: '@UI.Identification'
-    }]
+    Facets        : [
+        {
+            $Type : 'UI.ReferenceFacet',
+            Label : '{i18n>general_info_facet}',
+            ID    : 'Identification',
+            Target: '@UI.Identification'
+        },
+        {
+            $Type : 'UI.ReferenceFacet',
+            Label : '{i18n>attachments_table_label}',
+            Target: 'attachments/@UI.LineItem',
+        },
+    ]
 });
+
+annotate srv.Attachments with @( //
+    UI.LineItem     : [
+        {Value: fileName},
+        {Value: content}
+    ]
+);

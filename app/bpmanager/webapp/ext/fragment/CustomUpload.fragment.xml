@@ -15,7 +15,7 @@
 		maxFileNameLength="30"
 		maxFileSize="200"
 		httpRequestMethod="Put"
-		uploadButtonInvisible="false"
+		uploadButtonInvisible="{= ${ui>/isEditable} === false}"
 		sameFilenameAllowed="false"
 		items="{path: 'attachments', templateShareable: false}">
 		<upload:toolbar>

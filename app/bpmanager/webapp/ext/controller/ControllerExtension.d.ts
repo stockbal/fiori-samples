@@ -12,7 +12,7 @@ declare module "sap/ui/core/mvc/ControllerExtension" {
       getExtensionAPI(): API;
       getAppComponent(): AppComponent;
       setModel(model: Model, name: string): void;
-      getModel<T>(name: string): T;
+      getModel<T>(name?: string): T extends Model ? T : Model;
     };
     getView(): View;
   }

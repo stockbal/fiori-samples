@@ -14,13 +14,13 @@ entity BusinessPartners : cuid, managed {
 }
 
 entity Attachments : cuid, managed {
-    mimeType : String       @title: 'Mime Type'   @Core.IsMediaType;
-    fileName : String       @title: 'Filename';
+    mimeType : String       @title: 'Mime Type'                        @Core.IsMediaType;
+    fileName : String       @title: '{i18n>attachment_filename_title}';
 
     @Core.ContentDisposition: {
         Filename: fileName,
         Type    : 'inline'
     }
-    content  : LargeBinary  @title: 'Attachment'  @Core.MediaType: mimeType;
+    content  : LargeBinary  @title: '{i18n>attachment_content_title}'  @Core.MediaType: mimeType;
     travel   : Association to BusinessPartners;
 }

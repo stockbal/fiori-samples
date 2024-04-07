@@ -32,7 +32,7 @@ This app also shows another approach if the custom fragment approach may not be 
 
 Here we are creating the table section via service level annotations (i.e. `@UI.LineItem`).
 
-In the `onInit` event inside an Object Page Controller Extension we are then enhancing the table toolbar by appending an additional action that is coming from a `FileUploader` control (see [custom code](./app/bpmanager/webapp/ext/util/AttachmentUtil.ts)).
+In the `onInit` event inside an Object Page Controller Extension we are then enhancing the table toolbar by appending an additional action that is coming from a `FileUploader` control (see [custom code](./app/bpmanager/webapp/ext/util/UploadHelper.ts)).
 
 <details>
 <summary>Expand to show preview</summary>

@@ -3,18 +3,38 @@ import ODataListBinding from "sap/ui/model/odata/v4/ODataListBinding";
 import ODataModel from "sap/ui/model/odata/v4/ODataModel";
 import UploadSet, {
   UploadSet$AfterItemAddedEvent,
-  UploadSet$AfterItemRemovedEvent
+  UploadSet$AfterItemRemovedEvent,
+  UploadSet$UploadCompletedEvent
 } from "sap/m/upload/UploadSet";
 import Context from "sap/ui/model/odata/v4/Context";
 
 import JSONModel from "sap/ui/model/json/JSONModel";
 import MessageBox from "sap/m/MessageBox";
 import ResourceModel from "sap/ui/model/resource/ResourceModel";
+import Title from "sap/m/Title";
 
-function getUploadSetControl(extApi: ExtensionAPI) {
+export function getUploadSetControl(extApi: ExtensionAPI) {
   return extApi.byId(
     "bpmanager::BusinessPartnersObjectPage--fe::CustomSubSection::CustomUpload--AttachmentUploadSet"
   ) as UploadSet;
+}
+
+export function refreshUploadSetTitle(extApi: ExtensionAPI) {
+  const uploadSetTitle = extApi.byId(
+    "bpmanager::BusinessPartnersObjectPage--fe::CustomSubSection::CustomUpload--AttachmentUploadSetTitle"
+  ) as Title;
+  if (uploadSetTitle) {
+    uploadSetTitle.getBinding("text")?.refresh();
+  }
+}
+
+function updateSelectionCount(extApi: ExtensionAPI) {
+  const uploadSet = getUploadSetControl(extApi);
+
+  (extApi.getModel("upload") as JSONModel).setProperty(
+    "/uploadSetSelection",
+    uploadSet.getSelectedItems().length
+  );
 }
 
 export default {
@@ -41,6 +61,7 @@ export default {
     const attachmentContext = attachmentBinding.create({
       fileName: uploadItem.getFileName()
     });
+
     await attachmentContext.created();
 
     let serviceUrl = (this.getModel() as ODataModel).getServiceUrl();
@@ -52,6 +73,7 @@ export default {
     uploadItem.setBindingContext(attachmentContext);
     uploadItem.bindProperty("fileName", { path: "fileName" });
     uploadItem.bindProperty("url", { path: "content" });
+
     // .bindProperty does not work here
     uploadItem.setUploadUrl(
       serviceUrl + attachmentContext.getPath() + "/content"
@@ -61,6 +83,14 @@ export default {
     (uploadItem.getParent() as UploadSet).uploadItem(uploadItem);
   },
 
+  onUploadCompleted(this: ExtensionAPI, event: UploadSet$UploadCompletedEvent) {
+    const uploadItem = event.getParameter("item");
+    if (!uploadItem) {
+      return;
+    }
+    refreshUploadSetTitle(this);
+  },
+
   /*
    * Updates JSON property with current count of attachments to enable/disable delete button
    */
@@ -68,12 +98,8 @@ export default {
     if (!(this.getModel("ui") as JSONModel).getProperty("/isEditable")) {
       return;
     }
-    const uploadSet = getUploadSetControl(this);
 
-    (this.getModel("upload") as JSONModel).setProperty(
-      "/uploadSetSelection",
-      uploadSet.getSelectedItems().length
-    );
+    updateSelectionCount(this);
   },
 
   async onMultiDelete(this: ExtensionAPI) {
@@ -110,6 +136,9 @@ export default {
       const itemContext = <Context>item.getBindingContext();
       if (itemContext) {
         await itemContext.delete();
+
+        refreshUploadSetTitle(this);
+        updateSelectionCount(this);
       }
     }
   }

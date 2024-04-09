@@ -59,7 +59,3 @@ npm run watch-bpmanager
 ## Known bugs
 
 - `sap.m.UploadSet` does not allow multi selection if `instantUpload` is disabled. Due to a bug it will be rendered anyhow if the property is not changed (e.g. `None` during read-only and `MultiSelect` during edit mode)
-- The count in the upload section control does not get refreshed after a new attachment get's uploaded  
-  Possible solutions:
-  - Manually update the title text with the current count
-  - Find correct `context` for the `ODataListBinding` creation so the `attachment/$count` binding get's refreshed properly

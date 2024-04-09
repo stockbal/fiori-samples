@@ -10,6 +10,7 @@
 		terminationEnabled="true"
 		multiple="true"
 		afterItemAdded="handler.onAfterItemAdded"
+		uploadCompleted="handler.onUploadCompleted"
 		afterItemRemoved="handler.onItemRemoved"
 		selectionChanged="handler.onSelectionChanged"
 		maxFileNameLength="30"
@@ -20,8 +21,8 @@
 		items="{path: 'attachments', templateShareable: false}">
 		<upload:toolbar>
 			<OverflowToolbar id="uploadToolbar">
-				<Title id="_IDGenTitle1"
-					text="{i18n>attachments_title} ({attachments/$count})"></Title>
+				<Title id="AttachmentUploadSetTitle"
+					text="{upload>/title}"></Title>
 				<ToolbarSpacer id="_IDGenToolbarSpacer1" />
 				<upload:UploadSetToolbarPlaceholder id="_IDGenUploadSetToolbarPlaceholder1" />
 				<Button id="_IDGenButton1"

@@ -17,6 +17,12 @@ The demo application uses an OData v4 services, built with CAP - however, if the
 
 Additionally the control has also been enhanced with a multi delete option.
 
+### Required sources for this approach
+
+- [ControllerExtension#onPageReady](./app/bpmanager/webapp/ext/controller/ObjectPageExt.controller.ts#L51)
+- [CustomUpload.ts](./app/bpmanager/webapp/ext/fragment/CustomUpload.ts)
+- [CustomUpload.fragment.xml](./app/bpmanager/webapp/ext/fragment/CustomUpload.fragment.xml)
+
 <details>
 <summary>Expand to show preview</summary>
 
@@ -33,6 +39,12 @@ This app also shows another approach if the custom fragment approach may not be 
 Here we are creating the table section via service level annotations (i.e. `@UI.LineItem`).
 
 In the `onInit` event inside an Object Page Controller Extension we are then enhancing the table toolbar by appending an additional action that is coming from a `FileUploader` control (see [custom code](./app/bpmanager/webapp/ext/util/UploadHelper.ts)).
+
+### Required sources for this approach
+
+- [ControllerExtension#onInit](./app/bpmanager/webapp/ext/controller/ObjectPageExt.controller.ts#L45)
+- [UploadHelper.ts](./app/bpmanager/webapp/ext/util/UploadHelper.ts)
+- [UploadItemUtil.ts](./app/bpmanager/webapp/ext/util/UploadItemUtil.ts)
 
 <details>
 <summary>Expand to show preview</summary>

@@ -1,5 +1,8 @@
+/**
+ * This file and the corresponding .fragment.xml file is required for
+ * the custom UploadSet approach (aka free style)
+ */
 import ExtensionAPI from "sap/fe/templates/ObjectPage/ExtensionAPI";
-import ODataListBinding from "sap/ui/model/odata/v4/ODataListBinding";
 import ODataModel from "sap/ui/model/odata/v4/ODataModel";
 import UploadSet, {
   UploadSet$AfterItemAddedEvent,
@@ -7,11 +10,11 @@ import UploadSet, {
   UploadSet$UploadCompletedEvent
 } from "sap/m/upload/UploadSet";
 import Context from "sap/ui/model/odata/v4/Context";
-
 import JSONModel from "sap/ui/model/json/JSONModel";
 import MessageBox from "sap/m/MessageBox";
 import ResourceModel from "sap/ui/model/resource/ResourceModel";
 import Title from "sap/m/Title";
+import UploadItemUtils from "../util/UploadItemUtil";
 
 export function getUploadSetControl(extApi: ExtensionAPI) {
   return extApi.byId(
@@ -31,10 +34,9 @@ export function refreshUploadSetTitle(extApi: ExtensionAPI) {
 function updateSelectionCount(extApi: ExtensionAPI) {
   const uploadSet = getUploadSetControl(extApi);
 
-  (extApi.getModel("upload") as JSONModel).setProperty(
-    "/uploadSetSelection",
-    uploadSet.getSelectedItems().length
-  );
+  extApi
+    .getModel<JSONModel>("upload")
+    .setProperty("/uploadSetSelection", uploadSet.getSelectedItems().length);
 }
 
 export default {
@@ -46,7 +48,7 @@ export default {
     if (!uploadItem) {
       return;
     }
-    const context = this.getBindingContext() as Context;
+    const context = this.getBindingContext<Context>();
     if (!context) {
       return;
     }
@@ -54,9 +56,9 @@ export default {
     // - using the "items" binding from the UploadSet produces duplicate entries (further analysis needed???)
     // - using the "context" during "bindList" works only if the object page is already loaded in the draft state
     //   otherwise an exception is thrown because of a path missmatch (-> analyze fiori elements framework how ODataListBinding's are created for table facets)
-    const attachmentBinding = this.getModel()?.bindList(
+    const attachmentBinding = this.getModel<ODataModel>()?.bindList(
       `${context.getPath()}/attachments`
-    ) as ODataListBinding;
+    );
 
     const attachmentContext = attachmentBinding.create({
       fileName: uploadItem.getFileName()
@@ -64,7 +66,7 @@ export default {
 
     await attachmentContext.created();
 
-    let serviceUrl = (this.getModel() as ODataModel).getServiceUrl();
+    let serviceUrl = this.getModel<ODataModel>()?.getServiceUrl();
     if (serviceUrl.charAt(serviceUrl.length - 1) === "/") {
       serviceUrl = serviceUrl.substring(0, serviceUrl.length - 1);
     }
@@ -74,13 +76,22 @@ export default {
     uploadItem.bindProperty("fileName", { path: "fileName" });
     uploadItem.bindProperty("url", { path: "content" });
 
-    // .bindProperty does not work here
-    uploadItem.setUploadUrl(
-      serviceUrl + attachmentContext.getPath() + "/content"
+    UploadItemUtils.setUploadUrl(
+      uploadItem,
+      attachmentContext,
+      attachmentBinding,
+      serviceUrl,
+      "Attachments",
+      "content"
     );
 
-    // perform actual upload
-    (uploadItem.getParent() as UploadSet).uploadItem(uploadItem);
+    UploadItemUtils.addHttpHeaders(
+      uploadItem,
+      attachmentContext,
+      this.getModel<ODataModel>()
+    );
+
+    uploadItem.getParent<UploadSet>()?.uploadItem(uploadItem);
   },
 
   onUploadCompleted(this: ExtensionAPI, event: UploadSet$UploadCompletedEvent) {
@@ -95,7 +106,7 @@ export default {
    * Updates JSON property with current count of attachments to enable/disable delete button
    */
   async onSelectionChanged(this: ExtensionAPI) {
-    if (!(this.getModel("ui") as JSONModel).getProperty("/isEditable")) {
+    if (!this.getModel<JSONModel>("ui").getProperty("/isEditable")) {
       return;
     }
 
@@ -106,7 +117,7 @@ export default {
     const uploadSet = getUploadSetControl(this);
 
     MessageBox.confirm(
-      (this.getModel("i18n") as ResourceModel).getProperty(
+      this.getModel<ResourceModel>("i18n").getProperty(
         "delete_selected_dialog_title"
       ) ?? "Delete selected Attachments?",
       {
@@ -133,7 +144,7 @@ export default {
   ) {
     const item = event.getParameter("item");
     if (item) {
-      const itemContext = <Context>item.getBindingContext();
+      const itemContext = item.getBindingContext<Context>();
       if (itemContext) {
         await itemContext.delete();
 

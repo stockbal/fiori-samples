@@ -56,9 +56,9 @@
                 <Property Name="fileName" Type="Edm.String"/>
                 <Property Name="content" Type="Edm.Stream"/>
                 <NavigationProperty Name="travel" Type="UploadService.BusinessPartners" Partner="attachments">
-                    <ReferentialConstraint Property="travel_ID" ReferencedProperty="ID"/>
+                    <ReferentialConstraint Property="bp_ID" ReferencedProperty="ID"/>
                 </NavigationProperty>
-                <Property Name="travel_ID" Type="Edm.Guid"/>
+                <Property Name="bp_ID" Type="Edm.Guid"/>
                 <Property Name="IsActiveEntity" Type="Edm.Boolean" Nullable="false" DefaultValue="true"/>
                 <Property Name="HasActiveEntity" Type="Edm.Boolean" Nullable="false" DefaultValue="false"/>
                 <Property Name="HasDraftEntity" Type="Edm.Boolean" Nullable="false" DefaultValue="false"/>

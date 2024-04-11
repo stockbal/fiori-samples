@@ -1,3 +1,7 @@
+/**
+ * This file is required for the alternate approach where the created
+ * object table from annotation @UI.LineItem is used
+ */
 import ExtensionAPI from "sap/fe/templates/ObjectPage/ExtensionAPI";
 import Table from "sap/m/Table";
 import { UploadState } from "sap/m/library";
@@ -12,6 +16,7 @@ import Context from "sap/ui/model/odata/v4/Context";
 import ODataListBinding from "sap/ui/model/odata/v4/ODataListBinding";
 import ODataModel from "sap/ui/model/odata/v4/ODataModel";
 import FileUploader from "sap/ui/unified/FileUploader";
+import UploadItemUtils from "./UploadItemUtil";
 
 const ATTACHMENT_TABLE_ID =
   "bpmanager::BusinessPartnersObjectPage--fe::table::attachments::LineItem";
@@ -38,7 +43,7 @@ export default class UploadHelper {
   registerUploadAction() {
     const attachmentTableTB = this.#extension
       .getView()
-      .byId(`${ATTACHMENT_TABLE_ID}-toolbar`) as ActionToolbar;
+      .byId<ActionToolbar>(`${ATTACHMENT_TABLE_ID}-toolbar`);
     if (attachmentTableTB) {
       attachmentTableTB.addAction(
         new ActionToolbarAction({
@@ -83,9 +88,11 @@ export default class UploadHelper {
     const serviceUrl = this.#getServiceUrl();
     const attachmentTable = this.#getAttachmentTable();
 
-    const attachmentBinding = attachmentTable?.getBinding(
-      "items"
-    ) as ODataListBinding;
+    const attachmentBinding =
+      attachmentTable?.getBinding<ODataListBinding>("items");
+    if (!attachmentBinding) {
+      return;
+    }
 
     const uploader = this.#getUploader();
     this.#newContexts = [];
@@ -109,10 +116,20 @@ export default class UploadHelper {
           new CustomData({ key: LAST_ITEM_CUSTOM_KEY, value: true })
         );
       }
-      uploadSetItem.setUploadUrl(
-        serviceUrl + attachmentContext.getPath() + "/content"
+      UploadItemUtils.setUploadUrl(
+        uploadSetItem,
+        attachmentContext,
+        attachmentBinding,
+        serviceUrl,
+        "Attachments",
+        "content"
       );
-      uploader.uploadItem(uploadSetItem);
+      UploadItemUtils.addHttpHeaders(
+        uploadSetItem,
+        attachmentContext,
+        this.#extension.base.getModel<ODataModel>()
+      );
+      uploader.uploadItem(uploadSetItem, uploadSetItem.getHeaderFields());
     });
 
     if (Array.isArray(uploadPromises)) {
@@ -149,9 +166,9 @@ export default class UploadHelper {
     return this.#serviceUrl;
   }
 
-  #getAttachmentTable(): Table | undefined {
+  #getAttachmentTable() {
     return this.#extension
       .getView()
-      .byId(`${ATTACHMENT_TABLE_ID}-innerTable`) as Table;
+      .byId<Table>(`${ATTACHMENT_TABLE_ID}-innerTable`);
   }
 }

@@ -29,8 +29,6 @@
     "build": "ui5 build --config=ui5.yaml --clean-dest --dest dist",
     "lint": "eslint ./",
     "ts-typecheck": "tsc --noEmit",
-    "prestart": "npm run ts-typecheck",
-    "prebuild": "npm run ts-typecheck",
     "deploy": "fiori verify",
     "deploy-config": "fiori add deploy-config"
   }

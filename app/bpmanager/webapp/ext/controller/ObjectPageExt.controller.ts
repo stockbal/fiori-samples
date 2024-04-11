@@ -18,7 +18,7 @@ function initUploadModel(ext: ControllerExtension<ExtensionAPI>) {
 
   let modelData = uploadModel.getData();
   if (!("title" in modelData)) {
-    // defines calculated property
+    // defines calculated property for title
     Object.defineProperty(modelData, "title", {
       get: () => {
         const uploadSet = getUploadSetControl(ext.base.getExtensionAPI());

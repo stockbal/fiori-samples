@@ -6,7 +6,7 @@ declare module "sap/ui/core/mvc/ControllerExtension" {
   import Model from "sap/ui/model/Model";
   import AppComponent from "sap/fe/core/AppComponent";
 
-  export default class ControllerExtension<API> {
+  export default interface ControllerExtension<API> {
     static overrides: unknown;
     base: {
       getExtensionAPI(): API;

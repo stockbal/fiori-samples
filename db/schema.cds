@@ -10,7 +10,7 @@ entity BusinessPartners : cuid, managed {
     lastName    : String                                @title: '{i18n>bp_lastName}';
     fullName    : String = firstName || ' ' || lastName @title: 'Full Name';
     attachments : Composition of many Attachments
-                      on $self = attachments.travel;
+                      on $self = attachments.bp;
 }
 
 entity Attachments : cuid, managed {
@@ -22,5 +22,13 @@ entity Attachments : cuid, managed {
         Type    : 'inline'
     }
     content  : LargeBinary  @title: '{i18n>attachment_content_title}'  @Core.MediaType: mimeType;
-    travel   : Association to BusinessPartners;
+    bp       : Association to BusinessPartners;
 }
+
+annotate BusinessPartners with {
+    modifiedAt @odata.etag
+};
+
+annotate Attachments with {
+    modifiedAt @odata.etag
+};

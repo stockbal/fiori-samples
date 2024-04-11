@@ -24,3 +24,11 @@ entity Attachments : cuid, managed {
     content  : LargeBinary  @title: '{i18n>attachment_content_title}'  @Core.MediaType: mimeType;
     travel   : Association to BusinessPartners;
 }
+
+annotate BusinessPartners with {
+    modifiedAt @odata.etag
+};
+
+annotate Attachments with {
+    modifiedAt @odata.etag
+};

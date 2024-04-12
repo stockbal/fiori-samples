@@ -152,9 +152,11 @@ export default class UploadHelper {
 
   #getServiceUrl() {
     if (!this.#serviceUrl) {
-      this.#serviceUrl = this.#extension.base
-        .getModel<ODataModel>()
-        .getServiceUrl();
+      const model = this.#extension.base.getModel<ODataModel>();
+      if (!model) {
+        throw new Error("Main ODataModel not found");
+      }
+      this.#serviceUrl = model.getServiceUrl();
 
       if (this.#serviceUrl.charAt(this.#serviceUrl.length - 1) === "/") {
         this.#serviceUrl = this.#serviceUrl.substring(

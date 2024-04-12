@@ -32,7 +32,7 @@ export default {
   addHttpHeaders: function (
     item: UploadSetItem,
     context: Context,
-    model: ODataModel
+    model?: ODataModel
   ) {
     const token = model?.getHttpHeaders()?.["X-CSRF-Token"];
 

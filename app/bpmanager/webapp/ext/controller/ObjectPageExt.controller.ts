@@ -22,12 +22,12 @@ function initUploadModel(ext: ControllerExtension<ExtensionAPI>) {
     Object.defineProperty(modelData, "title", {
       get: () => {
         const uploadSet = getUploadSetControl(ext.base.getExtensionAPI());
-
-        return `${ext.base
+        const itemCount = uploadSet.getItems().length ?? 0;
+        const titlePrefix = ext.base
           .getModel<ResourceModel>("i18n")
-          .getProperty("attachments_title")} (${
-          uploadSet.getItems().length ?? 0
-        })`;
+          ?.getProperty("attachments_title");
+
+        return itemCount > 0 ? `${titlePrefix} (${itemCount})` : titlePrefix;
       }
     });
     uploadModel.setData(modelData);

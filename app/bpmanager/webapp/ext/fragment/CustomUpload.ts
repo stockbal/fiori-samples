@@ -59,10 +59,7 @@ export default {
     const attachmentBinding = this.getModel<ODataModel>()?.bindList(
       `${context.getPath()}/attachments`
     );
-
-    const attachmentContext = attachmentBinding.create({
-      fileName: uploadItem.getFileName()
-    });
+    const attachmentContext = attachmentBinding.create();
 
     await attachmentContext.created();
 
@@ -94,11 +91,33 @@ export default {
     uploadItem.getParent<UploadSet>()?.uploadItem(uploadItem);
   },
 
+  /*
+   * Sets the File Name via PATCH request and triggers refresh
+   * of the UploadSet title
+   */
   onUploadCompleted(this: ExtensionAPI, event: UploadSet$UploadCompletedEvent) {
     const uploadItem = event.getParameter("item");
     if (!uploadItem) {
       return;
     }
+    const context = uploadItem.getBindingContext<Context>();
+    const headers = event.getParameter("headers");
+    let newEtag: string | undefined;
+    if (typeof headers === "string") {
+      newEtag = (headers as string)
+        .split("\r\n")
+        .find((h) => h.startsWith("etag"))
+        ?.substring(6);
+    }
+    if (newEtag) {
+      context?.setProperty(
+        "@odata.etag",
+        newEtag,
+        /*prevent patch request*/ null as never
+      );
+    }
+    context?.setProperty("fileName", (uploadItem.getFileObject() as File).name);
+
     refreshUploadSetTitle(this);
   },
 

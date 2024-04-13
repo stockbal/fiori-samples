@@ -3,15 +3,14 @@ import Item from "sap/ui/core/Item";
 import Context from "sap/ui/model/odata/v4/Context";
 import ODataListBinding from "sap/ui/model/odata/v4/ODataListBinding";
 import ODataModel from "sap/ui/model/odata/v4/ODataModel";
+import { MediaCollection } from "./ServiceMetadata";
 
 export default {
   setUploadUrl(
     item: UploadSetItem,
     context: Context,
     listBinding: ODataListBinding,
-    serviceUrl: string,
-    entitySet: string,
-    contentProperty: string
+    serviceUrl: string
   ) {
     /**
      * Note:
@@ -25,7 +24,7 @@ export default {
     if (keySegment) {
       // .bindProperty does not work here
       item.setUploadUrl(
-        `${serviceUrl}/${entitySet}${keySegment}/${contentProperty}`
+        `${serviceUrl}/${MediaCollection.entitySet}${keySegment}/${MediaCollection.contentProp}`
       );
     }
   },

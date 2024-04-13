@@ -15,6 +15,7 @@ import MessageBox from "sap/m/MessageBox";
 import ResourceModel from "sap/ui/model/resource/ResourceModel";
 import Title from "sap/m/Title";
 import UploadItemUtils from "../util/UploadItemUtil";
+import { MediaCollection } from "../util/ServiceMetadata";
 
 export function getUploadSetControl(extApi: ExtensionAPI) {
   return extApi.byId(
@@ -23,9 +24,9 @@ export function getUploadSetControl(extApi: ExtensionAPI) {
 }
 
 export function refreshUploadSetTitle(extApi: ExtensionAPI) {
-  const uploadSetTitle = extApi.byId(
+  const uploadSetTitle = extApi.byId<Title>(
     "bpmanager::BusinessPartnersObjectPage--fe::CustomSubSection::CustomUpload--AttachmentUploadSetTitle"
-  ) as Title;
+  );
   if (uploadSetTitle) {
     uploadSetTitle.getBinding("text")?.refresh();
   }
@@ -57,9 +58,9 @@ export default {
     // - using the "context" during "bindList" works only if the object page is already loaded in the draft state
     //   otherwise an exception is thrown because of a path missmatch (-> analyze fiori elements framework how ODataListBinding's are created for table facets)
     const attachmentBinding = this.getModel<ODataModel>()?.bindList(
-      `${context.getPath()}/attachments`
+      `${context.getPath()}/${MediaCollection.navigationProp}`
     );
-    const attachmentContext = attachmentBinding.create();
+    const attachmentContext = attachmentBinding.create({}, true, false, false);
 
     await attachmentContext.created();
 
@@ -70,16 +71,16 @@ export default {
 
     // apply created context to the upload item and set upload url for
     uploadItem.setBindingContext(attachmentContext);
-    uploadItem.bindProperty("fileName", { path: "fileName" });
-    uploadItem.bindProperty("url", { path: "content" });
+    uploadItem.bindProperty("fileName", {
+      path: MediaCollection.fileNameProp
+    });
+    uploadItem.bindProperty("url", { path: MediaCollection.contentProp });
 
     UploadItemUtils.setUploadUrl(
       uploadItem,
       attachmentContext,
       attachmentBinding,
-      serviceUrl,
-      "Attachments",
-      "content"
+      serviceUrl
     );
 
     UploadItemUtils.addHttpHeaders(
@@ -116,7 +117,10 @@ export default {
         /*prevent patch request*/ null as never
       );
     }
-    context?.setProperty("fileName", (uploadItem.getFileObject() as File).name);
+    context?.setProperty(
+      MediaCollection.fileNameProp,
+      (uploadItem.getFileObject() as File).name
+    );
 
     refreshUploadSetTitle(this);
   },

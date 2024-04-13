@@ -8,7 +8,6 @@ import { UploadState } from "sap/m/library";
 import UploadSetItem from "sap/m/upload/UploadSetItem";
 import Uploader, { Uploader$UploadCompletedEvent } from "sap/m/upload/Uploader";
 import UploaderHttpRequestMethod from "sap/m/upload/UploaderHttpRequestMethod";
-import CustomData from "sap/ui/core/CustomData";
 import ControllerExtension from "sap/ui/core/mvc/ControllerExtension";
 import ActionToolbar from "sap/ui/mdc/ActionToolbar";
 import ActionToolbarAction from "sap/ui/mdc/actiontoolbar/ActionToolbarAction";
@@ -17,10 +16,10 @@ import ODataListBinding from "sap/ui/model/odata/v4/ODataListBinding";
 import ODataModel from "sap/ui/model/odata/v4/ODataModel";
 import FileUploader from "sap/ui/unified/FileUploader";
 import UploadItemUtils from "./UploadItemUtil";
+import { MediaCollection } from "./ServiceMetadata";
 
 const ATTACHMENT_TABLE_ID =
   "bpmanager::BusinessPartnersObjectPage--fe::table::attachments::LineItem";
-const LAST_ITEM_CUSTOM_KEY = "lastItem";
 
 /**
  * @namespace bpmanager.ext.util
@@ -30,7 +29,6 @@ export default class UploadHelper {
   #extension: ControllerExtension<ExtensionAPI>;
   #uploader: Uploader;
   #serviceUrl: string;
-  #newContexts: Context[];
 
   constructor(extension: ControllerExtension<ExtensionAPI>) {
     this.#extension = extension;
@@ -95,34 +93,29 @@ export default class UploadHelper {
     }
 
     const uploader = this.#getUploader();
-    this.#newContexts = [];
 
-    const uploadPromises = Object.entries(files).map(async ([, file], i) => {
+    const uploadPromises = Object.entries(files).map(async ([, file]) => {
       const uploadSetItem = new UploadSetItem({
         uploadState: UploadState.Ready
       });
       // unfortunately this method is not part of the public interface
       (uploadSetItem as any)._setFileObject(file);
 
-      const attachmentContext = attachmentBinding.create({
-        fileName: file.name
-      });
+      const attachmentContext = attachmentBinding.create(
+        {},
+        true,
+        false,
+        false
+      );
       await attachmentContext.created();
 
-      this.#newContexts.push(attachmentContext);
+      uploadSetItem.setBindingContext(attachmentContext);
 
-      if (i === files.length - 1) {
-        uploadSetItem.addCustomData(
-          new CustomData({ key: LAST_ITEM_CUSTOM_KEY, value: true })
-        );
-      }
       UploadItemUtils.setUploadUrl(
         uploadSetItem,
         attachmentContext,
         attachmentBinding,
-        serviceUrl,
-        "Attachments",
-        "content"
+        serviceUrl
       );
       UploadItemUtils.addHttpHeaders(
         uploadSetItem,
@@ -139,15 +132,30 @@ export default class UploadHelper {
 
   async #onUploadCompleted(e: Uploader$UploadCompletedEvent) {
     const item = e.getParameter("item");
-    const customData = item?.getCustomData();
-    const isLastItem = customData
-      ?.find((i) => i.getKey() === LAST_ITEM_CUSTOM_KEY)
-      ?.getValue();
-
-    if (isLastItem) {
-      // last item uploaded, now we refresh the new contexts so the URL is rendered
-      this.#newContexts.forEach((c) => c.refresh());
+    if (!item) {
+      return;
     }
+    const context = item.getBindingContext<Context>();
+    const headers = (e.getParameter("responseXHR") as Record<string, unknown>)
+      ?.headers;
+    let newEtag: string | undefined;
+    if (typeof headers === "string") {
+      newEtag = (headers as string)
+        .split("\r\n")
+        .find((h) => h.startsWith("etag"))
+        ?.substring(6);
+    }
+    if (newEtag) {
+      context?.setProperty(
+        "@odata.etag",
+        newEtag,
+        /*prevent patch request*/ null as never
+      );
+    }
+    context?.setProperty(
+      MediaCollection.fileNameProp,
+      (item.getFileObject() as File).name
+    );
   }
 
   #getServiceUrl() {

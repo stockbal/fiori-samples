@@ -1,0 +1,39 @@
+{
+  "name": "ts-local-lib",
+  "version": "1.0.0",
+  "description": "Reuse Library in workspace usage",
+  "license": "MIT",
+  "private": true,
+  "dependencies": {
+    "@sap/cds": "^8",
+    "express": "^4"
+  },
+  "devDependencies": {
+    "@cap-js/cds-typer": "^0.34.0",
+    "@cap-js/cds-types": "^0.10.0",
+    "@cap-js/sqlite": "^1",
+    "@types/node": "^22",
+    "cds-plugin-ui5": "^0.12.0",
+    "prettier": "^3.5.3",
+    "ts-node": "^10.9.2",
+    "typescript": "^5"
+  },
+  "scripts": {
+    "start": "cds-serve",
+    "watch": "cds w"
+  },
+  "imports": {
+    "#cds-models/*": "./@cds-models/*/index.js"
+  },
+  "prettier": {
+    "printWidth": 120,
+    "trailingComma": "none",
+    "arrowParens": "avoid"
+  },
+  "workspaces": [
+    "app/*"
+  ],
+  "sapux": [
+    "app/bookshop.admin"
+  ]
+}

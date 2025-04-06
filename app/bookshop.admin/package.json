@@ -1,0 +1,33 @@
+{
+  "name": "bookshop.admin",
+  "version": "0.0.1",
+  "private": true,
+  "description": "Bookshop",
+  "keywords": [
+    "ui5",
+    "openui5",
+    "sapui5"
+  ],
+  "main": "webapp/index.html",
+  "devDependencies": {
+    "@sap-ux/eslint-plugin-fiori-tools": "^0.5.0",
+    "@sap-ux/ui5-middleware-fe-mockserver": "2",
+    "@sap/ux-specification": "^1.124.13",
+    "@sap/ux-ui5-tooling": "1",
+    "@sapui5/types": "~1.134.1",
+    "@typescript-eslint/eslint-plugin": "^8.29.0",
+    "@typescript-eslint/parser": "^8.29.0",
+    "@ui5/cli": "^4.0.14",
+    "typescript": "^5.8.3",
+    "ui5-tooling-transpile": "^3.7.5"
+  },
+  "scripts": {
+    "build": "ui5 build --config=ui5.yaml --clean-dest --dest dist",
+    "lint": "eslint ./",
+    "ts-typecheck": "tsc --noEmit",
+    "prestart": "npm run ts-typecheck",
+    "prebuild": "npm run ts-typecheck",
+    "deploy": "fiori verify",
+    "deploy-config": "fiori add deploy-config"
+  }
+}

@@ -25,6 +25,19 @@
           "odataVersion": "4.0"
         }
       }
+    },
+    "crossNavigation": {
+      "inbounds": {
+        "Payments-manage": {
+          "semanticObject": "Payment",
+          "action": "manage",
+          "title": "{{appTitle}}",
+          "signature": {
+            "additionalParameters": "ignored",
+            "parameters": {}
+          }
+        }
+      }
     }
   },
   "sap.ui": {

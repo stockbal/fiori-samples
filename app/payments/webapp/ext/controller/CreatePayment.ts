@@ -15,7 +15,7 @@ function modelPropertyChanged(event: Model$PropertyChangeEvent) {
 
   // only remove messages that match the given path
   const matchingMessages = messages.filter((m) =>
-    m.getTargets().some((t) => t === path || t.endsWith(path))
+    m.getTargets().some((t) => t === path || t.endsWith(path)),
   );
 
   if (matchingMessages.length > 0) {
@@ -35,14 +35,14 @@ function showMessageDialog() {
         path: "/",
         template: new MessageItem({
           type: "{type}",
-          title: "{message}"
-        })
+          title: "{message}",
+        }),
       },
     }),
     endButton: new Button({
       text: "Close",
-      press: () => messageDialog.close()
-    })
+      press: () => messageDialog.close(),
+    }),
   });
   messageDialog.setModel(Messaging.getMessageModel());
   messageDialog.open();
@@ -55,7 +55,7 @@ function removeDuplicateMessages(messages: Message[]) {
       !uniqueMessages.some(
         (um) =>
           m.getTargets().some((t) => um.getTargets().includes(t)) &&
-          m.getMessage() === um.getMessage()
+          m.getMessage() === um.getMessage(),
       )
     ) {
       uniqueMessages.push(m);
@@ -73,7 +73,7 @@ export async function createPayment(this: ExtensionAPI) {
     id: "fragmentThree",
     name: "payments.ext.fragment.NewPayment",
     controller: this,
-    contextPath: "/Payments"
+    contextPath: "/Payments",
   })) as Dialog;
 
   dialog.attachEventOnce("afterClose", () => {
@@ -93,14 +93,14 @@ export async function createPayment(this: ExtensionAPI) {
           return;
         }
         dialog.close();
-      }
-    })
+      },
+    }),
   );
   dialog.setEndButton(
     new Button({
       text: "Close",
-      press: () => dialog.close()
-    })
+      press: () => dialog.close(),
+    }),
   );
 
   model.attachPropertyChange(modelPropertyChanged);
@@ -109,7 +109,7 @@ export async function createPayment(this: ExtensionAPI) {
 
   // REMARK: normally the ID for the payment entity would not be hardcoded here :)
   dialog.bindElement({
-    path: "/Payments(c105b04a-307f-4972-9771-ec112a3238ff)"
+    path: "/Payments(c105b04a-307f-4972-9771-ec112a3238ff)",
   });
 
   Messaging.removeAllMessages();

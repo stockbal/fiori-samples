@@ -6,25 +6,38 @@
   "license": "UNLICENSED",
   "private": true,
   "dependencies": {
-    "@sap/cds": "^7",
-    "@sap/cds-common-content": "^1.4.0",
-    "express": "^4"
+    "@sap/cds": "^9",
+    "@sap/cds-common-content": "^3.2.0",
+    "express": "^5"
   },
   "devDependencies": {
-    "@cap-js/sqlite": "^1",
-    "cds-plugin-ui5": "^0.6.13",
+    "@cap-js/cds-typer": ">=0.1",
+    "@cap-js/cds-types": "^0.16.0",
+    "@cap-js/sqlite": "^2",
+    "@types/node": "^24.0.0",
+    "cds-launchpad-plugin": "^2.3.0",
+    "cds-plugin-ui5": "^0.17.0",
     "ts-node": "^10.9.2",
-    "typescript": "^5.4.2"
+    "tsx": "^4",
+    "typescript": "^6.0.3"
   },
   "scripts": {
     "start": "cds-serve",
     "watch": "cds-ts watch",
     "watch-payments": "cds watch --open payments/index.html?sap-ui-xx-viewCache=false --livereload false"
   },
+  "cds": {
+    "launchpad": {
+      "version": "1.135.0"
+    }
+  },
   "workspaces": [
     "app/*"
   ],
   "sapux": [
     "app/payments"
-  ]
+  ],
+  "imports": {
+    "#cds-models/*": "./@cds-models/*/index.js"
+  }
 }
